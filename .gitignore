@@ -4,3 +4,6 @@ venv/
 # arquivos temporários python
 __pycache__/
 *.pyc
+
+# Python virtual environment
+.venv/
