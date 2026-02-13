@@ -1,168 +1,198 @@
-"""
-iris_knn.py
+🌸 Iris Dataset — Pipeline Reprodutível de Classificação Supervisionada
+1. Visão Geral
 
-Objetivo:
-- Treinar e avaliar modelos clássicos (kNN, SVM e Random Forest) no dataset Iris.
-- Persistir um artefato local (iris_report.json) contendo métricas e parâmetros do experimento.
+Este repositório implementa um pipeline reprodutível de Machine Learning supervisionado utilizando o clássico dataset Iris.
 
-Por que isso importa:
-- Sem um "artefato" (arquivo gerado), o resultado fica apenas no console.
-- Com o artefato, você pode versionar, auditar, aplicar hash/criptografia e evoluir o pipeline.
-"""
+O objetivo não é otimizar hiperparâmetros ou atingir máxima performance, mas compreender:
 
-# ---------------------------
-# Bibliotecas padrão (Python)
-# ---------------------------
+Representação vetorial dos dados
 
-import json
-# json: serialização do relatório técnico (artefato) em um formato portátil e versionável.
+Separação treino/teste
 
-from datetime import datetime
-# datetime: adiciona timestamp no relatório para rastreabilidade.
+Comportamento comparativo de algoritmos
 
-# ---------------------------
-# Bibliotecas de Machine Learning (scikit-learn)
-# ---------------------------
+Avaliação estruturada de modelos
 
-from sklearn.datasets import load_iris
-# load_iris: carrega o dataset Iris (clássico para classificação supervisionada).
+Geração de artefato auditável
 
-from sklearn.model_selection import train_test_split
-# train_test_split: separa os dados em treino e teste de forma reprodutível.
+Este projeto funciona como o “Hello World” do Machine Learning clássico.
 
-from sklearn.neighbors import KNeighborsClassifier
-# KNeighborsClassifier: modelo kNN (classificador baseado em distância e vizinhos mais próximos).
+2. Fundamentação Teórica
+2.1 Dataset Iris
 
-from sklearn.svm import SVC
-# SVC: Support Vector Classifier (modelo SVM para classificação).
+Criado por Ronald Fisher (1936), contém:
 
-from sklearn.ensemble import RandomForestClassifier
-# RandomForestClassifier: ensemble de árvores de decisão (robusto e geralmente forte em baseline).
+150 amostras
 
-from sklearn.metrics import accuracy_score, confusion_matrix
-# accuracy_score: mede acurácia (proporção de acertos).
-# confusion_matrix: matriz de confusão (detalha acertos/erros por classe).
+3 classes:
+
+Setosa
+
+Versicolor
+
+Virginica
+
+4 features numéricas:
+
+Comprimento da sépala
+
+Largura da sépala
+
+Comprimento da pétala
+
+Largura da pétala
+
+2.2 Representação Matemática
+
+Cada flor é representada como um vetor em ℝ⁴:
+
+𝑋
+∈
+R
+150
+×
+4
+X∈R
+150×4
+
+Classificar flores equivale a classificar vetores em um espaço multidimensional.
+
+3. Metodologia Experimental
+3.1 Separação Treino/Teste
+
+80% treino
+
+20% teste
+
+random_state = 42 para reprodutibilidade
+
+O conjunto de teste funciona como validação externa.
+
+3.2 Algoritmos Avaliados
+1️⃣ k-Nearest Neighbors (kNN)
+
+Classificação baseada em distância
+
+Sensível à escolha das features
+
+2️⃣ Support Vector Machine (SVM)
+
+Busca fronteira ótima de separação
+
+Robusto em baixa dimensionalidade
+
+3️⃣ Random Forest
+
+Ensemble de árvores de decisão
+
+Menos sensível a ruído
+
+4. Experimento Didático Central
+Experimento 1 — ℝ⁴ (todas as features)
+
+Separabilidade quase perfeita.
+Acurácia próxima de 1.0.
+
+Experimento 2 — ℝ² (apenas sépalas)
+
+Redução de informação → redução de desempenho.
+
+Resultados observados:
+
+Modelo	Acurácia
+kNN (k=4)	~0.70
+SVM (linear)	~0.90
+Random Forest	~0.76
+
+Conclusão:
+Algoritmos reagem de forma diferente à limitação informacional.
+
+5. Avaliação
+
+Utiliza-se:
+
+Accuracy
+
+Matriz de Confusão
+
+A matriz permite analisar:
+
+Acertos por classe
+
+Erros entre espécies
+
+Padrões de confusão
+
+6. Arquitetura do Projeto
+iris-ml/
+├── iris_knn.py          # Pipeline principal
+├── iris_report.json     # Artefato gerado (output estruturado)
+├── README.md
+└── .venv/
+
+7. Artefato Gerado
+
+O script gera automaticamente:
+
+iris_report.json
 
 
-def evaluate(model, X_train, X_test, y_train, y_test, name: str) -> dict:
-    """
-    Treina o modelo, realiza predição e retorna métricas estruturadas.
+Conteúdo:
 
-    Parameters:
-        model: instância sklearn (ainda não treinada)
-        X_train, X_test: features de treino e teste
-        y_train, y_test: rótulos de treino e teste
-        name (str): rótulo legível do modelo (para relatório e logs)
+Timestamp UTC
 
-    Returns:
-        dict: métricas estruturadas para persistência em artefato JSON
-    """
+Dataset utilizado
 
-    # 1) Treinamento
-    model.fit(X_train, y_train)
+Features selecionadas
 
-    # 2) Predição no conjunto de teste
-    y_pred = model.predict(X_test)
+Parâmetros de split
 
-    # 3) Métricas
-    acc = accuracy_score(y_test, y_pred)
-    cm = confusion_matrix(y_test, y_pred)
+Métricas por modelo
 
-    # 4) Saída no console (diagnóstico humano imediato)
-    print("\n" + "=" * 60)
-    print(f"Modelo: {name}")
-    print(f"Acurácia: {acc:.6f}")
-    print("Matriz de confusão:")
-    print(cm)
+Matrizes de confusão estruturadas
 
-    # 5) Retorno estruturado (para compor o artefato)
-    return {
-        "model": name,
-        "accuracy": float(acc),
-        "confusion_matrix": cm.tolist(),
-    }
+Isso transforma o exercício em um pipeline auditável e versionável.
+
+8. Como Executar
+8.1 Criar ambiente virtual
+python3 -m venv .venv
+source .venv/bin/activate
+
+8.2 Instalar dependências
+pip install scikit-learn
+
+8.3 Executar pipeline
+python3 iris_knn.py
 
 
-if __name__ == "__main__":
-    # ---------------------------------------------------------------------
-    # 1) Carregar dataset Iris
-    # ---------------------------------------------------------------------
-    iris = load_iris()
+O artefato iris_report.json será gerado no diretório raiz.
 
-    # ---------------------------------------------------------------------
-    # 2) Selecionar features
-    # Observação: você escolheu apenas as sépalas (features mais difíceis)
-    # Índices no iris.data:
-    #   0 = sepal length
-    #   1 = sepal width
-    #   2 = petal length
-    #   3 = petal width
-    # ---------------------------------------------------------------------
-    X = iris.data[:, [0, 1]]
-    y = iris.target
+9. Evoluções Técnicas Possíveis
 
-    # ---------------------------------------------------------------------
-    # 3) Separar treino e teste (reprodutível via random_state)
-    # ---------------------------------------------------------------------
-    test_size = 0.2
-    random_state = 42
+Este projeto pode evoluir para:
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X,
-        y,
-        test_size=test_size,
-        random_state=random_state,
-    )
+Persistência de modelos (joblib)
 
-    # ---------------------------------------------------------------------
-    # 4) Avaliar modelos e coletar resultados
-    # ---------------------------------------------------------------------
-    results = []
+Versionamento de experimentos
 
-    # Modelo 1: kNN
-    # Observação: seu código tinha "k=5" no texto, mas n_neighbors=4.
-    # Aqui, mantemos coerente: k=4.
-    knn_k = 4
-    knn = KNeighborsClassifier(n_neighbors=knn_k)
-    results.append(evaluate(knn, X_train, X_test, y_train, y_test, f"kNN (k={knn_k})"))
+Aplicação de hash SHA-256 no artefato
 
-    # Modelo 2: SVM Linear
-    svm = SVC(kernel="linear")
-    results.append(evaluate(svm, X_train, X_test, y_train, y_test, "SVM (kernel=linear)"))
+Criptografia de outputs
 
-    # Modelo 3: Random Forest
-    rf_trees = 200
-    rf = RandomForestClassifier(n_estimators=rf_trees, random_state=random_state)
-    results.append(
-        evaluate(rf, X_train, X_test, y_train, y_test, f"Random Forest ({rf_trees} árvores)")
-    )
+Integração com pipelines de segurança
 
-    # ---------------------------------------------------------------------
-    # 5) Criar e salvar o artefato local (iris_report.json)
-    # Esse arquivo será o "output auditável" do pipeline Iris.
-    # ---------------------------------------------------------------------
-    report = {
-        "created_at_utc": datetime.utcnow().isoformat() + "Z",
-        "dataset": "sklearn.datasets.load_iris",
-        "features_used": {
-            "indices": [0, 1],
-            "names": ["sepal_length", "sepal_width"],
-        },
-        "split": {
-            "test_size": test_size,
-            "random_state": random_state,
-        },
-        "classes": {
-        "labels": [int(label) for label in set(y)],
-        "names": [str(name) for name in iris.target_names],
-},
+Deploy em ambiente cloud (Azure ML)
 
-        "results": results,
-    }
+10. Conclusão
 
-    output_file = "iris_report.json"
-    with open(output_file, "w", encoding="utf-8") as f:
-        json.dump(report, f, ensure_ascii=False, indent=4)
+Machine Learning começa com:
 
-    print("\n" + "-" * 60)
-    print(f"Relatório técnico salvo em: {output_file}")
+Representação geométrica
+
+Estruturação de dados
+
+Decisão supervisionada
+
+Antes de qualquer deep learning, existe matemática, separabilidade e generalização.
+
+Este projeto demonstra esses fundamentos de forma controlada, reprodutível e auditável.
