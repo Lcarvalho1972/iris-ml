@@ -1,0 +1,95 @@
+{
+    "created_at_utc": "2026-02-13T20:29:24.221967Z",
+    "dataset": "sklearn.datasets.load_iris",
+    "features_used": {
+        "indices": [
+            0,
+            1
+        ],
+        "names": [
+            "sepal_length",
+            "sepal_width"
+        ]
+    },
+    "split": {
+        "test_size": 0.2,
+        "random_state": 42
+    },
+    "classes": {
+        "labels": [
+            0,
+            1,
+            2
+        ],
+        "names": [
+            "setosa",
+            "versicolor",
+            "virginica"
+        ]
+    },
+    "results": [
+        {
+            "model": "kNN (k=4)",
+            "accuracy": 0.7,
+            "confusion_matrix": [
+                [
+                    10,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    7,
+                    2
+                ],
+                [
+                    0,
+                    7,
+                    4
+                ]
+            ]
+        },
+        {
+            "model": "SVM (kernel=linear)",
+            "accuracy": 0.9,
+            "confusion_matrix": [
+                [
+                    10,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    7,
+                    2
+                ],
+                [
+                    0,
+                    1,
+                    10
+                ]
+            ]
+        },
+        {
+            "model": "Random Forest (200 árvores)",
+            "accuracy": 0.7666666666666667,
+            "confusion_matrix": [
+                [
+                    10,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    6,
+                    3
+                ],
+                [
+                    0,
+                    4,
+                    7
+                ]
+            ]
+        }
+    ]
+}
